@@ -1,12 +1,17 @@
 resource "aws_sqs_queue" "test-sqs" {
   # FIFO queue name shoud end with ".fifo"
-  name                      = "test-sqs.fifo"
-  fifo_queue                = true
+  name       = "test-sqs.fifo"
+  fifo_queue = true
   # メッセージの内容が重複している場合に排除するかどうか。
-  # trueにしない場合、メッセージ送信時にグループIDも送信する必要が出て来る。
+  # trueにしない場合、メッセージ送信時にもmessage_deduplication_idを送信する必要が出て来る。
   content_based_deduplication = true
   # メッセージが保持される日数(デフォルトは4日)
   message_retention_seconds = 86400
+
+  # キューに追加された各メッセージの初回配信を遅延させる時間
+  delay_seconds = 10
+
+  receive_wait_time_seconds = 5
 
   # 可視性タイムアウトの秒数.デフォルトは30秒
   visibility_timeout_seconds = 30
@@ -20,9 +25,9 @@ resource "aws_sqs_queue" "test-sqs" {
 }
 
 resource "aws_sqs_queue" "test-sqs-deadletter" {
-  name                      = "test-sqs-deadletter.fifo"
-  fifo_queue                = true
+  name                        = "test-sqs-deadletter.fifo"
+  fifo_queue                  = true
   content_based_deduplication = true
-  message_retention_seconds = 1209600
-  tags                      = local.common-tags
+  message_retention_seconds   = 1209600
+  tags                        = local.common-tags
 }

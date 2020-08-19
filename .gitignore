@@ -3,3 +3,9 @@
 *.tfstate
 *.tfstate.backup
 *.tfstate.*.backup
+
+# Lambda
+lambda-functions/src/*
+lambda-functions/build/*
+lambda-functions/consumer-sqs/node_modules/*
+
