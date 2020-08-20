@@ -16,7 +16,7 @@ To test Terraform
     $ terraform apply
 
     AWSの管理コンソールからSQSにメッセージを登録する
-    {'is_success': 'true'}
+    {"is_success": "true"}
     をメッセージに設定している場合はリトライせずに成功する。
     上記のメッセージを設定していない場合は30秒間隔で規定回数(4回)リトライされる。
     ※CloudWatchからログを確認できる。
