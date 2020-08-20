@@ -1,7 +1,7 @@
 /**
  * Lambdaメインファンクション.
  */
-exports.handler = async (event) => {
+exports.handle = (event) => {
   console.log(event);
   const body = JSON.parse(event.Records[0].body)
   console.log(body);

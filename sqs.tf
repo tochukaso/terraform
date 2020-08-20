@@ -18,7 +18,7 @@ resource "aws_sqs_queue" "test-sqs" {
 
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.test-sqs-deadletter.arn
-    maxReceiveCount     = 4
+    maxReceiveCount     = 2
   })
 
   tags = local.common-tags
@@ -30,4 +30,9 @@ resource "aws_sqs_queue" "test-sqs-deadletter" {
   content_based_deduplication = true
   message_retention_seconds   = 1209600
   tags                        = local.common-tags
+}
+
+resource "aws_sqs_queue" "error-sqs" {
+  name = "error-sqs"
+  tags = local.common-tags
 }

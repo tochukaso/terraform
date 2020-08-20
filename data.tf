@@ -30,9 +30,9 @@ data "aws_iam_policy_document" "consumer-sqs-role-policy" {
     sid    = "SQS202008191600"
     effect = "Allow"
 
-    actions = ["sqs:*"]
+    actions = ["sqs:SendMessage"]
 
-    resources = ["*"]
+    resources = [aws_sqs_queue.error-sqs.arn]
   }
 }
 
@@ -42,8 +42,22 @@ data "null_data_source" "consumer-sqs" {
     source_dir = "${path.module}/lambda-functions/consumer-sqs"
   }
 }
+
 data "archive_file" "consumer-sqs" {
   type        = "zip"
   source_dir  = data.null_data_source.consumer-sqs.outputs["source_dir"]
   output_path = "${path.module}/lambda-functions/upload/consumer-sqs.zip"
+}
+
+data "null_data_source" "dead-letter-sqs" {
+  inputs = {
+    version_id = null_resource.dead-letter-sqs.id
+    source_dir = "${path.module}/lambda-functions/dead-letter-sqs"
+  }
+}
+
+data "archive_file" "dead-letter-sqs" {
+  type        = "zip"
+  source_dir  = data.null_data_source.dead-letter-sqs.outputs["source_dir"]
+  output_path = "${path.module}/lambda-functions/upload/dead-letter-sqs.zip"
 }
