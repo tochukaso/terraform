@@ -7,5 +7,5 @@
 # Lambda
 lambda-functions/src/*
 lambda-functions/build/*
-lambda-functions/consumer-sqs/node_modules/*
+lambda-functions/*/node_modules/*
 
