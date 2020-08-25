@@ -36,6 +36,6 @@ exports.handle = (event) => {
     .catch((errorResult) => {
       console.error(`${JSON.stringify(errorResult)}`);
       console.info("***** End *****");
-      callback(createResponse(500, "error", "Internal Server Error."));
+      throw(errorResult);
     });
 };

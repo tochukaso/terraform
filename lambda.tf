@@ -17,6 +17,13 @@ resource "aws_lambda_event_source_mapping" "consumer-sqs" {
   batch_size       = 1
 }
 
+resource "aws_lambda_event_source_mapping" "consumer-sqs2" {
+  event_source_arn = aws_sqs_queue.test-sqs2.arn
+  enabled          = true
+  function_name    = aws_lambda_function.consumer-sqs.arn
+  batch_size       = 1
+}
+
 resource "null_resource" "consumer-sqs" {
   triggers = {
     version = "0.0.1"
@@ -42,6 +49,13 @@ resource "aws_lambda_function" "dead-letter-sqs" {
 
 resource "aws_lambda_event_source_mapping" "dead-letter-sqs" {
   event_source_arn = aws_sqs_queue.test-sqs-deadletter.arn
+  enabled          = true
+  function_name    = aws_lambda_function.dead-letter-sqs.arn
+  batch_size       = 1
+}
+
+resource "aws_lambda_event_source_mapping" "dead-letter-sqs2" {
+  event_source_arn = aws_sqs_queue.test-sqs2-deadletter.arn
   enabled          = true
   function_name    = aws_lambda_function.dead-letter-sqs.arn
   batch_size       = 1

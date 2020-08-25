@@ -30,9 +30,20 @@ data "aws_iam_policy_document" "consumer-sqs-role-policy" {
     sid    = "SQS202008191600"
     effect = "Allow"
 
-    actions = ["sqs:SendMessage"]
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+      "sqs:SendMessage",
+    ]
 
-    resources = [aws_sqs_queue.error-sqs.arn]
+    resources = [
+      aws_sqs_queue.test-sqs.arn,
+      aws_sqs_queue.test-sqs-deadletter.arn,
+      aws_sqs_queue.test-sqs2.arn,
+      aws_sqs_queue.test-sqs2-deadletter.arn,
+      aws_sqs_queue.error-sqs.arn
+    ]
   }
 }
 
