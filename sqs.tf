@@ -66,3 +66,27 @@ resource "aws_sqs_queue" "error-sqs" {
   name = "error-sqs"
   tags = local.common-tags
 }
+
+resource "aws_sqs_queue" "websocket-sqs" {
+  name                        = "websocket-sqs.fifo"
+  fifo_queue                  = true
+  content_based_deduplication = true
+  message_retention_seconds   = 86400
+  delay_seconds               = 0
+  visibility_timeout_seconds  = 30
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.websocket-sqs-deadletter.arn
+    maxReceiveCount     = 2
+  })
+
+  tags = local.common-tags
+}
+
+resource "aws_sqs_queue" "websocket-sqs-deadletter" {
+  name                        = "websocket-sqs-deadletter.fifo"
+  fifo_queue                  = true
+  content_based_deduplication = true
+  message_retention_seconds   = 1209600
+  tags                        = local.common-tags
+}
